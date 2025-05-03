@@ -84,22 +84,6 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(204).end()
 })
 
-//If you want your Render root URL to show something more informative
-//  (like available routes or docs), you could make the / route return that.
-app.get('/', (request, response) => {
-  response.send(`
-    <h1>Phonebook API</h1>
-    <ul>
-      <li>GET /info</li>
-      <li>GET /api/persons</li>
-      <li>GET /api/persons/:id</li>
-      <li>POST /api/persons</li>
-      <li>DELETE /api/persons/:id</li>
-    </ul>
-  `);
-});
-
-
 // function for generating id's
    const generatedId = () => {
     // finding out the largest id number in the current list and assign it to the maxId variable.
