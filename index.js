@@ -12,6 +12,11 @@ app.use(express.json())
 // importing cors to allow requests from other origins 
 const cors = require('cors')
 app.use(cors())
+
+// to make Express show static content 
+// we need a built-in middleware from Express called static
+app.use(express.static('dist'))
+
 //to use morgan as a middleware
 //creating a custom token to log the request body
 // morgan.token('body', ...) tells Morgan:
