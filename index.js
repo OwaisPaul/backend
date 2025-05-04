@@ -10,8 +10,8 @@ app.use(express.json())
 
 
 // importing cors to allow requests from other origins 
-const cors = require('cors')
-app.use(cors())
+// const cors = require('cors')
+// app.use(cors())
 
 // to make Express show static content 
 // we need a built-in middleware from Express called static
