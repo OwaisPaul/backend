@@ -1,4 +1,7 @@
- DELETE  http://localhost:3000/api/persons/5
+ POST  http://localhost:3000/api/persons
  Content-Type: application/json
 
- 
+{
+    "name": "jaadu",
+    "number": "222333-33-30"
+}
