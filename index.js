@@ -48,7 +48,13 @@ const password = process.argv[2]
 //   const now = new Date();
 //   response.send(`<h2>Phonebook has info for ${persons.length} people</h2><h3>${now.toString()}</h3>`);
 // });
-
+  //request for info
+  app.get('/info', (request, response) => {
+    Person.find({}).then(persons => {
+      const now = new Date();
+      response.send(`<h2>Phonebook has info for ${persons.length} people</h2><h3>${now.toString()}</h3>`)
+    })
+  })
   // request for all persons
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
