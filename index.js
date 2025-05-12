@@ -1,48 +1,21 @@
 
-// to make Express show static content 
-// we need a built-in middleware from Express called static
+require('dotenv').config()
+const express = require('express');
+const morgan = require('morgan');
+// importing cors to allow requests from other origins 
+const cors = require('cors')
+const mongoose = require('mongoose')
+const Person = require('./models/people')
+// saving express in a variable
+const app = express()
+  //some middlewares
+  // to make Express show static content 
+  // we need a built-in middleware from Express called static
 app.use(express.static('dist'))
 
 //to access the data easily, we need Express json-parser
 //parses JSON bodies first
 app.use(express.json())
-
-// use a custom format including the body
-app.use(morgan(':method :url :status - :response-time ms - :body'))
-require('dotenv').config()
-const express = require('express');
-const morgan = require('morgan');
-const Person = require('./models/people')
-//CONNECTING BACKEND TO THE DATABASE
-const mongoose = require('mongoose')
-const password = process.argv[2]
-
-
-// mongoose.set('strictQuery', false)
-// mongoose.connect(url)
-
-// const personSchema = new mongoose.Schema({
-//   name: String,
-//   number: String,
-// })
-// personSchema.set('toJSON', {
-//   transform: (document, returnedObject) => {
-//     returnedObject.id = returnedObject._id.toString()
-//     delete returnedObject._id
-//     delete returnedObject._v
-//   }
-// })
-
-// const Person = mongoose.model('Person' ,personSchema)
-// saving express in a variable
-const app = express()
-
-
-// importing cors to allow requests from other origins 
-const cors = require('cors')
-app.use(cors())
-
-
 
 //to use morgan as a middleware
 //creating a custom token to log the request body
@@ -54,8 +27,15 @@ morgan.token('body', (request) => {
   return JSON.stringify(request.body);
 });
 
+// use a custom format including the body
+app.use(morgan(':method :url :status - :response-time ms - :body'))
+
+app.use(cors())
 
 
+//CONNECTING BACKEND TO THE DATABASE
+
+const password = process.argv[2]
 // the below method is the first method to get the time and date
 //toLocaleTimeString() is a JavaScript method that converts a Date object into a string
 //showing the time, formatted based on the user's local settings (locale) — like their region, language,
@@ -90,12 +70,6 @@ app.get('/api/persons/:id', (request, response) => {
       //   response.status(400).send({ error: 'malformatted id'})
       // })
   })
-  //   if (person) {
-  //       response.json(person);
-  //   } else {
-  //       response.status(404).send({ error: 'Person not found' });
-  //   }
-  // })
 
 
 // for deleting a single entry by making an HTTP Delete request to the unique URL
@@ -107,15 +81,6 @@ app.delete('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-// function for generating id's
-  //  const generatedId = () => {
-  //   // finding out the largest id number in the current list and assign it to the maxId variable.
-  //   // we can use Math.random too but i think this is more decent way to generate id's
-  // const maxId = persons.length > 0
-  // ? Math.max(...persons.map(person => Number(person.id)))
-  // : 0
-  // return String(maxId + 1)
-  //  }
 // for adding new contacts 
 app.post('/api/persons' ,(request, response) => {
   // without the json parser the body property would be undefined
@@ -189,7 +154,7 @@ app.post('/api/persons' ,(request, response) => {
     app.use(errorHandler)
 
 // to make our app listen to the port
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
