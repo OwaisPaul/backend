@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Person = require('./models/people')
 
 // Ensure at least password is given
 if (process.argv.length < 3) {
@@ -13,11 +14,6 @@ const url = `mongodb+srv://owaispaul:${password}@cluster0.rlo42lw.mongodb.net/ph
 
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
-
-const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
-})
 
 const Person = mongoose.model('Person', personSchema)
 

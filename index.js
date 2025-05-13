@@ -5,6 +5,9 @@ const morgan = require('morgan');
 // importing cors to allow requests from other origins 
 const cors = require('cors')
 const mongoose = require('mongoose')
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err))
 const Person = require('./models/people')
 // saving express in a variable
 const app = express()
@@ -88,7 +91,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
 })
 
 // for adding new contacts 
-app.post('/api/persons' ,(request, response) => {
+app.post('/api/persons' ,(request, response, next) => {
   // without the json parser the body property would be undefined
   //json parser takes the JSON data of a request, transforms it into
   //  a javascript object and 
@@ -122,6 +125,7 @@ app.post('/api/persons' ,(request, response) => {
     person.save().then(savedPerson => {
       response.json(savedPerson)
     })
+    .catch(error => next(error))
     })
     // functionality to update the contact
     app.put('/api/persons/:id', (request, response, next) => {
@@ -147,11 +151,13 @@ app.post('/api/persons' ,(request, response) => {
 
     // express error handlers are middleware that are defined with a function that accepts 4 params
     const errorHandler = (error, request, response, next) => {
-      console.error(error.message)
+      console.error(error.message, error.name)
     
       if (error.name === 'CastError') {
         return response.status(400).send({ error: 'malformatted id' })
-      } 
+      } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message})
+      }
     
       next(error)
     }
