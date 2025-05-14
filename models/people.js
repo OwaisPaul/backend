@@ -6,7 +6,7 @@ const url = process.env.MONGODB_URI
 
 console.log('connecting to', url)
 
-const phoneRegexp = /^\d{2,3}-\d+$/; // 2 0r 3 digits, dash, then one or more digits 
+const phoneRegexp = /^\d{2,3}-\d+$/ // 2 0r 3 digits, dash, then one or more digits 
 
 const personSchema = new mongoose.Schema({
   name: {
@@ -21,7 +21,7 @@ const personSchema = new mongoose.Schema({
     required: [true, 'Number is required'],
     validate: {
       validator: function(v) {
-        return phoneRegexp.test(v);
+        return phoneRegexp.test(v)
       },
       message: props => `${props.value} is not a valid phone number ! Use format XX-XXXXXX or XXX-XXXXXX`
     }
