@@ -15,7 +15,7 @@ const url = `mongodb+srv://owaispaul:${password}@cluster0.rlo42lw.mongodb.net/ph
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
 
-const Person = mongoose.model('Person', personSchema)
+// const Person = mongoose.model('Person', personSchema)
 
 if (process.argv[3] === 'phonebook') {
   // Show all contacts
